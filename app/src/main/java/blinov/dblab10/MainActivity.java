@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     SimpleCursorAdapter userAdapter;
     DBhelper sqlHelper;
     ListView userList;
+    int SavedGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
                 userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
                         userCursor, headers, new int[]{android.R.id.text1,android.R.id.text2}, 0);
                 userList.setAdapter(userAdapter);//userList
+
+                SavedGroup = group;
             }
             catch (Exception e)
             {
@@ -99,6 +102,43 @@ public class MainActivity extends AppCompatActivity {
         catch (Exception e)
         {Toast.makeText(this, "error",Toast.LENGTH_SHORT);}
     }
+
+    public void deleteGroup(View view){
+        EditText GN = findViewById(R.id.groupnum);
+        int group = Integer.parseInt(String.valueOf(GN.getText()));
+        try
+        {
+            db.delete(DBhelper.G_TABLE_NAME,"_id = ?", new String[] {String.valueOf(group)});
+            Toast.makeText(this, "удалено", Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();}
+        //db.delete(DBhelper.G_TABLE_NAME,  "_id = ?", new String[] {"2"});
+
+    }
+
+    public void deleteStudent(View view){
+        EditText GN = findViewById(R.id.groupnum);
+        int group = Integer.parseInt(String.valueOf(GN.getText()));
+        try
+        {
+            String sql = "select * from Students where _id = " + group;
+            db.execSQL(sql);
+
+        }
+        catch (Exception e) {}
+        //db.delete(DBhelper.G_TABLE_NAME,  "_id = ?", new String[] {"2"});
+        Toast.makeText(this, "удалено", Toast.LENGTH_SHORT).show();
+    }
+    /*
+    public void delete(View view){
+    EditText GN = findViewById(R.id.groupnum);
+    int group = Integer.parseInt(String.valueOf(GN.getText()));
+    db.delete(DBhelper.G_TABLE_NAME,  "_id = ?", new String[] {String.valueOf(group)});
+    Toast.makeText(this, "удалено", Toast.LENGTH_SHORT).show();
+}
+    */
+
 
 
 }

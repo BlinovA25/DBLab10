@@ -32,11 +32,17 @@ public class DBhelper extends SQLiteOpenHelper {
     }
 
     @Override
+    public void onConfigure(SQLiteDatabase db)
+    {
+        db.setForeignKeyConstraintsEnabled(true);
+    }
+
+    @Override
     public void onCreate(SQLiteDatabase db) {
         //first table
         db.execSQL("CREATE TABLE IF NOT EXISTS Groups (_id INTEGER PRIMARY KEY , FACULTY TEXT, COURSE TEXT, NAME TEXT, HEAD TEXT);");
         //second table
-        db.execSQL("CREATE TABLE IF NOT EXISTS Students (_id INTEGER, ID_STUDENT INTEGER, NAME TEXT,FOREIGN KEY(_id) REFERENCES Groups(_id));");
+        db.execSQL("CREATE TABLE IF NOT EXISTS Students (_id INTEGER, ID_STUDENT INTEGER, NAME TEXT, FOREIGN KEY(_id) REFERENCES Groups(_id) on delete cascade on update cascade);");
     }
 
     @Override
@@ -115,6 +121,9 @@ public class DBhelper extends SQLiteOpenHelper {
         }
         return new String[]{};
     }
+
+
+
 
 
 
